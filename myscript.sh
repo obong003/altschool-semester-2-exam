@@ -47,7 +47,6 @@ cd laravel/
 install composer autoloader
 composer install --optimize-autoloader --no-dev --no-interaction
 composer update --no-interaction
-
 #copy contents of default .env file to new .env file
 sudo cp .env.example .env
 sudo php artisan key:generate
@@ -61,46 +60,45 @@ sudo echo '<VirtualHost *:80>
     ServerName localhost
         DocumentRoot /var/www/laravel/public
 
-	    <Directory /var/www/laravel>
-	            AllowOverride All
-		        </Directory>
+            <Directory /var/www/laravel>
+                    AllowOverride All
+                        </Directory>
 
-			    ErrorLog ${APACHE_LOG_DIR}/laravel-error.log
-			        CustomLog ${APACHE_LOG_DIR}/laravel-access.log combined
-				</VirtualHost>' | sudo tee /etc/apache2/sites-available/laravel.conf
+                            ErrorLog ${APACHE_LOG_DIR}/laravel-error.log
+                                CustomLog ${APACHE_LOG_DIR}/laravel-access.log combined
+                                </VirtualHost>' | sudo tee /etc/apache2/sites-available/laravel.conf
 
-				sudo a2dissite 000-default.conf
-				sudo a2ensite laravel.conf
-				sudo systemctl restart apache2
-				cd
-				#Install mysql
-				sudo apt install mysql-server -y
-				sudo apt install mysql-client -y
-				sudo systemctl start mysql
+                                sudo a2dissite 000-default.conf
+                                sudo a2ensite laravel.conf
+                                sudo systemctl restart apache2
+                                cd
+                                #Install mysql
+                                sudo apt install mysql-server -y
+                                sudo apt install mysql-client -y
+                                sudo systemctl start mysql
 
 
-				# Secure MySQL Installation
-				# Note: Obong, Dan, dev are placeholders for the secure installation prompts and can be 
-				sudo mysql -uroot -e "CREATE DATABASE Obong;"
-				sudo mysql -uroot -e "CREATE USER 'Dan'@'localhost' IDENTIFIED BY 'Dev';"
-				sudo mysql -uroot -e "GRANT ALL PRIVILEGES ON Obong.* TO 'Dan'@'localhost';"
-				cd /var/www/laravel
-				#edit laravel document to include new additions
-				sudo sed -i "23 s/^#//g" /var/www/laravel/.env
-				sudo sed -i "24 s/^#//g" /var/www/laravel/.env
-				sudo sed -i "25 s/^#//g" /var/www/laravel/.env
-				sudo sed -i "26 s/^#//g" /var/www/laravel/.env
-				sudo sed -i "27 s/^#//g" /var/www/laravel/.env
-				sudo sed -i '22 s/=sqlite/=mysql/' /var/www/laravel/.env
-				sudo sed -i '23 s/=127.0.0.1/=localhost/' /var/www/laravel/.env
-				sudo sed -i '25 s/=laravel/=Obong/' /var/www/laravel/.env
-				sudo sed -i '26 s/=root/=Dan/' /var/www/laravel/.env
-				sudo sed -i '27 s/=/=Dev/' /var/www/laravel/.env
-				sudo php artisan migrate
-				sudo php artisan storage:link
-				sudo php artisan db:seed
-				#restart apache2 to apply new changes
-				sudo systemctl restart apache2
-
+                                # Secure MySQL Installation
+                                # Note: Obong, Dan, dev are placeholders for the secure installation prompts and can be
+                                sudo mysql -uroot -e "CREATE DATABASE Obong;"
+                                sudo mysql -uroot -e "CREATE USER 'Dan'@'localhost' IDENTIFIED BY 'Dev';"
+                                sudo mysql -uroot -e "GRANT ALL PRIVILEGES ON Obong.* TO 'Dan'@'localhost';"
+                                cd /var/www/laravel
+                                #edit laravel document to include new additions
+                                sudo sed -i "23 s/^#//g" /var/www/laravel/.env
+                                sudo sed -i "24 s/^#//g" /var/www/laravel/.env
+                                sudo sed -i "25 s/^#//g" /var/www/laravel/.env
+                                sudo sed -i "26 s/^#//g" /var/www/laravel/.env
+                                sudo sed -i "27 s/^#//g" /var/www/laravel/.env
+                                sudo sed -i '22 s/=sqlite/=mysql/' /var/www/laravel/.env
+                                sudo sed -i '23 s/=127.0.0.1/=localhost/' /var/www/laravel/.env
+                                sudo sed -i '25 s/=laravel/=Obong/' /var/www/laravel/.env
+                                sudo sed -i '26 s/=root/=Dan/' /var/www/laravel/.env
+                                sudo sed -i '27 s/=/=Dev/' /var/www/laravel/.env
+				  sudo php artisan migrate
+                                sudo php artisan storage:link
+                                sudo php artisan db:seed
+                                #restart apache2 to apply new changes
+                                sudo systemctl restart apache2
 
 
