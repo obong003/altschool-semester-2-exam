@@ -1,0 +1,27 @@
+---
+
+
+- hosts: slave
+  become: true
+  tasks:
+    - name: deploy PhP/laravel app on slave node using bash script
+      script: /home/vagrant/altschool-semester-2-exam/myscript.sh
+
+    - name: verify that PHP application is accessible
+      uri: 
+        url: http://{{ ansible_host }}/index.php
+        return_content: yes
+      register: webpage
+      failed_when: "'Laravel' is not on webpage.content"
+
+- hosts: slave
+  become: false
+  tasks:
+    - name: create cron job to check server uptime everytime 12am
+      cron:
+        name: "check server uptime"
+        minute: "0"
+        hour: "0"
+        job: "uptime >> /home/vagrant/altschool-semester-2-exam/server_uptime.log"
+ 
+var:ansible_host: 192.168.56.5
